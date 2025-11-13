@@ -1,0 +1,29 @@
+#include <stdio.h>
+
+int main() {
+    int total, win, sent = 0, lost, i;
+    printf("Enter total number of frames to send: ");
+    scanf("%d", &total);
+    printf("Enter window size: ");
+    scanf("%d", &win);
+
+    while (sent < total) {
+        printf("\nSender: Sending frames ");
+        for (i = sent; i < sent + win && i < total; i++)
+            printf("%d ", i);
+        printf("\nEnter the frame number to be lost (-1 if none): ");
+        scanf("%d", &lost);
+
+        if (lost >= sent && lost < sent + win && lost < total) {
+            printf("Receiver: Frame %d lost! Go back and resend from %d\n", lost, lost);
+            sent = lost;  // retransmit from lost frame
+        } else {
+            sent += win;
+            if (sent > total)
+                sent = total;
+            printf("Receiver: Acknowledged up to frame %d\n", sent - 1);
+        }
+    }
+    printf("\nAll frames sent successfully using Go-Back-N!\n");
+    return 0;
+}
