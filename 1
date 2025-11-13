@@ -1,0 +1,45 @@
+1A
+
+
+#include <stdio.h>
+#include <string.h>
+
+int main() {
+    char data[50], res[100];
+    int i, j = 0, c = 0;
+    printf("Enter data: ");
+    scanf("%s", data);
+    for(i = 0; data[i]; i++) {
+        res[j++] = data[i];
+        if(data[i] == '1') c++;
+        else c = 0;
+        if(c == 5) { res[j++] = '0'; c = 0; }
+    }
+    res[j] = '\0';
+    printf("Stuffed: %s", res);
+}
+
+
+
+1B
+
+#include <stdio.h>
+#include <string.h>
+#define FLAG '$'
+#define ESC '&'
+
+int main() {
+    char data[50], res[100];
+    int i, j = 0;
+    printf("Enter data: ");
+    scanf("%s", data);
+    res[j++] = FLAG;
+    for(i = 0; data[i]; i++) {
+        if(data[i] == FLAG || data[i] == ESC)
+            res[j++] = ESC;
+        res[j++] = data[i];
+    }
+    res[j++] = FLAG;
+    res[j] = '\0';
+    printf("Stuffed: %s", res);
+}
