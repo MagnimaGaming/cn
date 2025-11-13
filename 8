@@ -1,0 +1,55 @@
+#include <stdio.h>
+#include <stdlib.h> // Included in image, good for 'int dropped' logic
+
+void main() {
+    int bucketSize, outputRate, n, incoming;
+    int stored = 0;
+    int dropped = 0;
+
+    printf("=== Leaky Bucket Algorithm Simulation ===\n\n");
+    
+    printf("Enter bucket capacity (in Packets): ");
+    scanf("%d", &bucketSize);
+    
+    printf("Enter output rate (Packets Per Second): ");
+    scanf("%d", &outputRate);
+    
+    printf("Enter number of incoming Packets (Time Slots): ");
+    scanf("%d", &n);
+    
+    for (int i = 1; i <= n; i++) {
+        printf("\nTime %d: Enter number of incoming Packets: ", i);
+        scanf("%d", &incoming);
+        printf("Incoming Packets: %d\n", incoming);
+        
+        if (incoming + stored > bucketSize) {
+            dropped = (incoming + stored) - bucketSize;
+            stored = bucketSize;
+            printf("Bucket overflow! Dropped Packets: %d\n", dropped);
+        } else {
+            stored = stored + incoming;
+        }
+        
+        if (stored > outputRate) {
+            stored = stored - outputRate;
+            printf("Transmitted: %d | Packets left in bucket: %d\n", outputRate, stored);
+        } else {
+            printf("Transmitted: %d | Packets left in bucket: 0\n", stored);
+            stored = 0;
+        }
+    }
+    
+    // Drain any remaining packets in the bucket after the simulation time
+    while (stored > 0) {
+        printf("\nDraining remaining packets...\n");
+        if (stored > outputRate) {
+            stored = stored - outputRate;
+            printf("Transmitted: %d | Packets left in bucket: %d\n", outputRate, stored);
+        } else {
+            printf("Transmitted: %d | Packets left in bucket: 0\n", stored);
+            stored = 0;
+        }
+    }
+    
+    printf("\nAll Packets transmitted successfully\n");
+}
