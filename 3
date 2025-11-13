@@ -1,0 +1,40 @@
+#include <stdio.h>
+#include <math.h>
+int main() {
+    int data[10], r = 0, m, i, j, k = 0;
+    int code[20];
+    printf("Enter number of data bits: ");
+    scanf("%d", &m);
+    printf("Enter data bits one by one: ");
+    for (i = 0; i < m; i++)
+        scanf("%d", &data[i]);
+    while (pow(2, r) < (m + r + 1))
+        r++;
+    printf("\nNumber of parity bits needed = %d\n", r);
+    int total = m + r;
+    j = 0;
+    k = 0;
+    for (i = 1; i <= total; i++) {
+        if (i == pow(2, j)) {
+            code[i] = 0; // placeholder for parity bit
+            j++;
+        } else {
+            code[i] = data[k];
+            k++;
+        }
+    }
+    for (i = 0; i < r; i++) {
+        int pos = pow(2, i);
+        int parity = 0;
+        for (j = pos; j <= total; j++) {
+            if (((j >> i) & 1) == 1)
+                parity ^= code[j];
+        }
+        code[pos] = parity;
+    }
+    printf("\nHamming Code: ");
+    for (i = total; i >= 1; i--)
+        printf("%d", code[i]);
+    printf("\n");
+    return 0;
+}
