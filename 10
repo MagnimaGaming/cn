@@ -1,0 +1,44 @@
+#include <stdio.h>
+#define N 10
+#define INF 999
+
+int main() {
+    int n, cost[N][N], dist[N][N], changed;
+
+    printf("n: ");
+    scanf("%d", &n);
+    printf("cost matrix (999=no link, 0=self):\n");
+    for (int i = 0; i < n; i++)
+        for (int j = 0; j < n; j++)
+            scanf("%d", &cost[i][j]);
+
+    for (int i = 0; i < n; i++)
+        for (int j = 0; j < n; j++)
+            dist[i][j] = cost[i][j];
+
+    do {
+        changed = 0;
+        for (int i = 0; i < n; i++)
+            for (int j = 0; j < n; j++)
+                for (int k = 0; k < n; k++)
+                    if (dist[i][j] > cost[i][k] + dist[k][j]) {
+                        dist[i][j] = cost[i][k] + dist[k][j];
+                        changed = 1;
+                    }
+    } while (changed);
+
+    for (int i = 0; i < n; i++) {
+        printf("Node %d costs:\n", i);
+        for (int j = 0; j < n; j++)
+            printf("%4d ", dist[i][j]);
+        printf("\n");
+    }
+    return 0;
+}
+
+
+Sample Output:
+Example:
+Node 0: 0 2 5
+Node 1: 2 0 3
+Node 2: 5 3 0
